@@ -11,4 +11,5 @@ import { CommonModule } from '@angular/common';
 })
 export class MovieCardComponent {
   @Input() movie: Result;
+  srcImg: string = 'https://image.tmdb.org/t/p/w500/';
 }
