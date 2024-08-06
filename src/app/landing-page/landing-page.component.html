@@ -1,0 +1,109 @@
+<div class="container">
+  <nav
+    class="navbar d-flex justify-content-between navbar-expand-lg navbar-light bg-light"
+  >
+    <a class="navbar-brand" href="#">Movies App</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div
+      class="collapse navbar-collapse d-flex justify-content-between"
+      id="navbarSupportedContent"
+    >
+      <ul class="navbar-nav d-flex justify-content-evenly mr-auto w-100">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Category
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <ng-container *ngFor="let genre of genres$ | async">
+              <a
+                routerLink="search/:{{ genre.id }}/:{{ genre.name }}"
+                (click)="searchByGenre(genre)"
+                class="dropdown-item"
+                href="#"
+                >{{ genre.name }}</a
+              >
+            </ng-container>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+      </ul>
+      <form [formGroup]="form" class="form-inline d-flex my-2 my-lg-0">
+        <input
+          formControlName="searchText"
+          class="form-control mr-sm-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        @if (searchMovies$ | async) {
+
+        <div
+          class="search border-1"
+          style="position: absolute; top: 50px; background-color: white"
+        >
+          <ng-container
+            *ngFor="let movie of (searchMovies$ | async)?.splice(0, 5)"
+          >
+            <p class="city m-0 p-2">
+              {{ movie.title }}
+            </p></ng-container
+          >
+        </div>
+        }
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          Search
+        </button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row popularMovies">
+      <h1 class="m-5">Popular Movies:</h1>
+      <div class="col-12 d-flex gap-3 overflow-auto">
+        <ng-container
+          *ngFor="
+            let movie of (popularMovies$ | async)?.slice(0, 10);
+            let i = index
+          "
+        >
+          <app-movie-card [movie]="movie"></app-movie-card>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row explore">
+      <h1 class="m-5">Explore Movies:</h1>
+      <div class="col-12 d-flex flex-wrap justify-content-evenly gap-3">
+        <ng-container
+          *ngFor="let movie of randomMovies$ | async; let i = index"
+        >
+          <app-movie-card [movie]="movie"></app-movie-card>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

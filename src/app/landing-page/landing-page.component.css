@@ -1,0 +1,13 @@
+.search {
+  min-width: 200px;
+  z-index: 2;
+}
+.city {
+  border: 1px solid;
+  min-width: 100%;
+  cursor: pointer;
+}
+.city:hover {
+  background-color: blue;
+  color: white;
+}
