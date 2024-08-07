@@ -67,7 +67,7 @@
           <ng-container *ngFor="let movie of movies?.slice(0, 5)">
             <p
               (click)="this.getMovieDetails()"
-              *ngIf="movies !== []"
+              *ngIf="form.get('searchText')?.value"
               [routerLink]="['/details', movie.title, movie.id]"
               class="movie m-0 p-2"
             >

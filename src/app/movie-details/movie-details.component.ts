@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { Genre, MovieDetails, Result } from '../service/types';
-import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-movie-details',
@@ -46,13 +46,13 @@ export class MovieDetailsComponent implements OnInit {
     this.getMovieDetails();
     this.genres$.subscribe((v) => console.log(v));
     this.form = this.fb.group({
-      searchText: [null],
+      searchText: [''],
     });
 
     this.form
       .get('searchText')
       .valueChanges.pipe(debounceTime(700), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe((value: string) => {
         if (value) {
           this.searchMovies$ = this.moviesService.getMoviesBySearch(value).pipe(
             map((movies: Result[]) => {
@@ -62,7 +62,7 @@ export class MovieDetailsComponent implements OnInit {
             })
           );
           this.searchMovies$.subscribe((v) => console.log(value));
-        } else return value;
+        } else return;
       });
     this.route.params.subscribe((params: Params) => {
       this.movieId = this.route.snapshot.params['ID'];
