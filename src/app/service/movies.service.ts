@@ -20,7 +20,9 @@ export class MoviesService {
 
   private apiUrl: string = `https://api.themoviedb.org/3`;
 
-  genres$ = new BehaviorSubject<Genre>(null);
+  genre$ = new BehaviorSubject<Genre>(null);
+  genres$: Observable<Genre[]>;
+  searchMovies$: Observable<Result[]>;
 
   getTopRatedMovies(): Observable<Result[]> {
     return this.http
@@ -53,6 +55,7 @@ export class MoviesService {
       )
       .pipe(map((response: any) => response.results));
   }
+
   getGenres(): Observable<Genre[]> {
     return this.http
       .get(`${this.apiUrl}/genre/movie/list?api_key=${environment.tmdbApiKey}`)

@@ -38,7 +38,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <ng-container *ngFor="let genre of genres$ | async">
               <a
-                routerLink="search/:{{ genre.id }}/:{{ genre.name }}"
+                [routerLink]="['/search', genre.id, genre.name]"
                 (click)="searchByGenre(genre)"
                 class="dropdown-item"
                 href="#"
@@ -68,7 +68,7 @@
           <ng-container
             *ngFor="let movie of (searchMovies$ | async)?.splice(0, 5)"
           >
-            <p class="city m-0 p-2">
+            <p class="m-0 p-2">
               {{ movie.title }}
             </p></ng-container
           >

@@ -41,7 +41,6 @@
                 [routerLink]="['/search', genre.id, genre.name]"
                 (click)="searchByGenre(genre)"
                 class="dropdown-item"
-                href="#"
                 >{{ genre.name }}</a
               >
             </ng-container>
@@ -80,10 +79,45 @@
       </form>
     </div>
   </nav>
-
-  <div class="container d-flex flex-wrap g-3 justify-content-evenly">
-    <ng-container *ngFor="let movie of moviesGenre$ | async">
-      <app-movie-card class="m-3" [movie]="movie"></app-movie-card>
-    </ng-container>
+  @if (movie$ | async; as movie ) {
+  <div class="row">
+    <div class="col-12 d-flex">
+      <div
+        class="img mb-5 p-3 bg-body-secondary d-flex col-8 justify-content-center"
+      >
+        <img
+          class="col-12"
+          style="width: 60%"
+          [src]="[srcImg + movie.poster_path]"
+          alt=""
+        />
+      </div>
+      <div class="info ps-2 pt-2 col-4 d-flex flex-column">
+        <div class="title d-flex flex-column justify-content-evenly h-25">
+          <div class="">
+            <h1>{{ movie.title }}</h1>
+            <div class="genre d-flex col-2 justify-content-between">
+              <p>Genres:</p>
+              <ng-container *ngFor="let genre of movie.genres">
+                <p class="me-2 ms-2">{{ genre.name }}</p>
+              </ng-container>
+            </div>
+          </div>
+          <div class="d-flex col-6 flex-column justify-content-between">
+            <p>Runtime: {{ movie.runtime }} min.</p>
+            <p>Rate: {{ movie.vote_average }}</p>
+            <p>Release Date: {{ movie.release_date }}</p>
+          </div>
+        </div>
+        <div class="description col-12">
+          <h4>Overview:</h4>
+          <h5>
+            {{ movie.overview }}
+          </h5>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="similarMovies"></div>
+  }
 </div>

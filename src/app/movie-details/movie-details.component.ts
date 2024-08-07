@@ -1,47 +1,39 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MoviesService } from '../service/movies.service';
-import { Genre, Result, searchResult } from '../service/types';
-import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { MovieCardComponent } from '../movie-card/movie-card.component';
-import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Genre, MovieDetails, Result } from '../service/types';
+import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-landing-page',
+  selector: 'app-movie-details',
   standalone: true,
-  imports: [CommonModule, MovieCardComponent, RouterLink, ReactiveFormsModule],
-  templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.css',
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  templateUrl: './movie-details.component.html',
+  styleUrl: './movie-details.component.css',
 })
-export class LandingPageComponent implements OnInit {
+export class MovieDetailsComponent implements OnInit {
   moviesService = inject(MoviesService);
   fb = inject(FormBuilder);
+  route = inject(ActivatedRoute);
+  movieId: number = this.route.snapshot.params['ID'];
 
   form: FormGroup;
-
-  popularMovies$ = new Observable<Result[]>();
-  randomMovies$ = new Observable<Result[]>();
-  genres$ = this.moviesService.genres$;
   searchMovies$ = this.moviesService.searchMovies$;
-
-  getPopularMovies() {
-    this.popularMovies$ = this.moviesService.getPopularMovies().pipe(
-      map((movies: Result[]) => {
-        console.log(movies);
-
-        return movies;
+  genres$ = this.moviesService.genres$;
+  movie$: Observable<MovieDetails>;
+  srcImg: string = 'https://image.tmdb.org/t/p/w342/';
+  searchByGenre(genre: Genre) {
+    this.moviesService.genre$.next(genre);
+  }
+  getMovieDetails() {
+    this.movie$ = this.moviesService.getMovieDetails(this.movieId).pipe(
+      map((movie) => {
+        return movie;
       })
     );
   }
-  getRandomMovies() {
-    this.randomMovies$ = this.moviesService.getRandomMovie().pipe(
-      map((movies: Result[]) => {
-        return movies;
-      })
-    );
-  }
-
   getGenres() {
     this.genres$ = this.moviesService.getGenres().pipe(
       map((genres) => {
@@ -49,15 +41,10 @@ export class LandingPageComponent implements OnInit {
       })
     );
   }
-  searchByGenre(genre: Genre) {
-    this.moviesService.genre$.next(genre);
-  }
-
-  constructor() {}
   ngOnInit(): void {
-    this.getPopularMovies();
-    this.getRandomMovies();
     this.getGenres();
+    this.getMovieDetails();
+    this.genres$.subscribe((v) => console.log(v));
     this.form = this.fb.group({
       searchText: [null],
     });
@@ -77,5 +64,6 @@ export class LandingPageComponent implements OnInit {
           this.searchMovies$.subscribe((v) => console.log(value));
         }
       });
+    console.log(this.route.snapshot.params['ID']);
   }
 }

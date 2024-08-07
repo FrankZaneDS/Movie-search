@@ -2,12 +2,12 @@
   min-width: 200px;
   z-index: 2;
 }
-.city {
+.movie {
   border: 1px solid;
   min-width: 100%;
   cursor: pointer;
 }
-.city:hover {
+.movie:hover {
   background-color: blue;
   color: white;
 }
