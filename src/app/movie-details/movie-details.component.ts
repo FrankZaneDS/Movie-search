@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MoviesService } from '../service/movies.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { Genre, MovieDetails, Result } from '../service/types';
 import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 
@@ -62,8 +62,13 @@ export class MovieDetailsComponent implements OnInit {
             })
           );
           this.searchMovies$.subscribe((v) => console.log(value));
-        }
+        } else return value;
       });
-    console.log(this.route.snapshot.params['ID']);
+    this.route.params.subscribe((params: Params) => {
+      this.movieId = this.route.snapshot.params['ID'];
+      this.form.reset();
+
+      this.getMovieDetails();
+    });
   }
 }

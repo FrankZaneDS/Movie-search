@@ -58,16 +58,19 @@
           placeholder="Search"
           aria-label="Search"
         />
-        @if (searchMovies$ | async) {
+        @if (searchMovies$ | async; as movies) {
 
         <div
           class="search border-1"
           style="position: absolute; top: 50px; background-color: white"
         >
-          <ng-container
-            *ngFor="let movie of (searchMovies$ | async)?.splice(0, 5)"
-          >
-            <p class="movie m-0 p-2">
+          <ng-container *ngFor="let movie of movies?.slice(0, 5)">
+            <p
+              (click)="this.getMovieDetails()"
+              *ngIf="movies !== []"
+              [routerLink]="['/details', movie.title, movie.id]"
+              class="movie m-0 p-2"
+            >
               {{ movie.title }}
             </p></ng-container
           >
