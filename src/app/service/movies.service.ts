@@ -25,7 +25,7 @@ export class MoviesService {
     });
 
     const body = {
-      model: 'command-xlarge-nightly', // Ovo možeš promeniti u drugi model ako je potrebno
+      model: 'command-xlarge-nightly',
       prompt: prompt,
       max_tokens: 100,
     };
