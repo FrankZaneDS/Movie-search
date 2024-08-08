@@ -33,8 +33,7 @@ export class MovieDetailsComponent implements OnInit {
   similarMovies$: Observable<Result[]>;
   userPrompt: string = '';
   response: string | null = null;
-  question: string =
-    'Odgovoraj samo na pitanja koja su bar na neki nacin u vezi sa filmom ';
+  question: string = 'answer only about this movie ';
   form: FormGroup;
   searchMovies$ = this.moviesService.searchMovies$;
   genres$ = this.moviesService.genres$;
@@ -60,6 +59,7 @@ export class MovieDetailsComponent implements OnInit {
           this.response = 'An error occurred while communicating with the API.';
         }
       );
+    this.userPrompt = '';
   }
 
   searchByGenre(genre: Genre) {
