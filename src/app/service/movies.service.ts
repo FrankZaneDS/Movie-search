@@ -1,14 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  Observable,
-  of,
-  switchMap,
-} from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { Genre, Result, searchResult } from './types';
 
@@ -19,10 +11,27 @@ export class MoviesService {
   http = inject(HttpClient);
 
   private apiUrl: string = `https://api.themoviedb.org/3`;
+  private apiChatUrl = 'https://api.cohere.ai/generate';
+  private apiKey = environment.chatGptApiKey;
 
   genre$ = new BehaviorSubject<Genre>(null);
   genres$: Observable<Genre[]>;
   searchMovies$: Observable<Result[]>;
+
+  generateText(prompt: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.apiKey}`,
+    });
+
+    const body = {
+      model: 'command-xlarge-nightly', // Ovo možeš promeniti u drugi model ako je potrebno
+      prompt: prompt,
+      max_tokens: 100,
+    };
+
+    return this.http.post(this.apiChatUrl, body, { headers });
+  }
 
   getTopRatedMovies(): Observable<Result[]> {
     return this.http
@@ -68,5 +77,13 @@ export class MoviesService {
       )
       .pipe(map((response: any) => response.results));
   }
+  getSimilarMovies(movieId: number): Observable<any> {
+    return this.http
+      .get(
+        `${this.apiUrl}/movie/${movieId}/similar?api_key=${environment.tmdbApiKey}`
+      )
+      .pipe(map((response: any) => response.results));
+  }
+
   constructor() {}
 }

@@ -11,3 +11,8 @@
   background-color: blue;
   color: white;
 }
+.response {
+  border: 1px solid;
+  min-height: 300px;
+  min-width: 50%;
+}
