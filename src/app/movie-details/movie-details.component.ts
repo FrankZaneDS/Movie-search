@@ -45,9 +45,8 @@ export class MovieDetailsComponent implements OnInit {
       .generateText(this.question, movie.title, this.userPrompt)
       .subscribe(
         (res) => {
-          console.log('Response:', res); // Loguje odgovor od API-ja
+          console.log('Response:', res);
 
-          // Proveri da li postoji 'text' u odgovoru
           if (res && res.text) {
             this.response = res.text;
           } else {
