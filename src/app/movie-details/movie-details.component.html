@@ -122,11 +122,10 @@
     </div>
   </div>
   <div class="similarMovies"></div>
-  }
   <div>
     <h5 class="w-50">I dare you to ask me anything about this movie!!!</h5>
     <input
-      (keyup.enter)="generateText()"
+      (keyup.enter)="generateText(movie)"
       class="form-control mr-sm-2 w-50"
       [(ngModel)]="userPrompt"
       placeholder="Ask me anything about this movie here :)"
@@ -153,4 +152,5 @@
     </div>
     }
   </div>
+  }
 </div>

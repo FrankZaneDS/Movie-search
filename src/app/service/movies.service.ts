@@ -18,7 +18,11 @@ export class MoviesService {
   genres$: Observable<Genre[]>;
   searchMovies$: Observable<Result[]>;
 
-  generateText(prompt: string): Observable<any> {
+  generateText(
+    question: string,
+    movie: string,
+    prompt: string
+  ): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.apiKey}`,
@@ -26,7 +30,7 @@ export class MoviesService {
 
     const body = {
       model: 'command-xlarge-nightly',
-      prompt: prompt,
+      prompt: question + movie + prompt,
       max_tokens: 100,
     };
 

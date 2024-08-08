@@ -33,30 +33,33 @@ export class MovieDetailsComponent implements OnInit {
   similarMovies$: Observable<Result[]>;
   userPrompt: string = '';
   response: string | null = null;
-
+  question: string =
+    'Odgovoraj samo na pitanja koja su bar na neki nacin u vezi sa filmom ';
   form: FormGroup;
   searchMovies$ = this.moviesService.searchMovies$;
   genres$ = this.moviesService.genres$;
   movie$: Observable<MovieDetails>;
   srcImg: string = 'https://image.tmdb.org/t/p/w342/';
 
-  generateText(): void {
-    this.moviesService.generateText(this.userPrompt).subscribe(
-      (res) => {
-        console.log('Response:', res); // Loguje odgovor od API-ja
+  generateText(movie: MovieDetails): void {
+    this.moviesService
+      .generateText(this.question, movie.title, this.userPrompt)
+      .subscribe(
+        (res) => {
+          console.log('Response:', res); // Loguje odgovor od API-ja
 
-        // Proveri da li postoji 'text' u odgovoru
-        if (res && res.text) {
-          this.response = res.text;
-        } else {
-          this.response = 'No valid response received.';
+          // Proveri da li postoji 'text' u odgovoru
+          if (res && res.text) {
+            this.response = res.text;
+          } else {
+            this.response = 'No valid response received.';
+          }
+        },
+        (error) => {
+          console.error('Error:', error);
+          this.response = 'An error occurred while communicating with the API.';
         }
-      },
-      (error) => {
-        console.error('Error:', error);
-        this.response = 'An error occurred while communicating with the API.';
-      }
-    );
+      );
   }
 
   searchByGenre(genre: Genre) {
