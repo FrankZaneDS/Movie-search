@@ -114,8 +114,9 @@ export class MovieDetailsComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.movieId = this.route.snapshot.params['ID'];
       this.form.reset();
-
+      this.response = '';
       this.getMovieDetails();
+      this.getSimilarMovies();
     });
   }
 }

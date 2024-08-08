@@ -99,7 +99,7 @@
         <div class="title d-flex flex-column justify-content-evenly h-50">
           <div class="">
             <h1>{{ movie.title }}</h1>
-            <div class="genre d-flex col-2 justify-content-between">
+            <div class="genre d-flex col-12 justify-content-between">
               <h5>Genres:</h5>
               <ng-container *ngFor="let genre of movie.genres">
                 <p class="me-2 ms-2">{{ genre.name }}</p>
@@ -140,7 +140,7 @@
 
     @if (similarMovies$|async; as similarMovies){
 
-    <div class="row popularMovies">
+    <div class="row popularMovies mb-5">
       <h1 class="m-5">Similar Movies:</h1>
       <div class="col-12 d-flex gap-3 overflow-auto">
         <ng-container
