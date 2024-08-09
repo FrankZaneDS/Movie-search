@@ -3,7 +3,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MoviesService } from '../service/movies.service';
-import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  switchMap,
+} from 'rxjs';
 import { Genre, Result } from '../service/types';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,41 +25,50 @@ export class SearchComponentComponent implements OnInit {
   moviesService = inject(MoviesService);
   fb = inject(FormBuilder);
 
-  form: FormGroup;
+  form = this.fb.group({
+    searchText: [null],
+  });
 
   genres$ = this.moviesService.genres$;
   genre$ = this.moviesService.genre$;
-  genreId: number;
-  moviesGenre$: Observable<Result[]>;
+  // genreId: number;
+  moviesGenre$ = this.genre$.pipe(
+    filter(genre => !!genre),
+    switchMap((genre) => this.moviesService.searchMovieByGenre(genre.id))
+  );
   searchMovies$: Observable<Result[]>;
 
   searchByGenre(genre: Genre) {
     this.moviesService.genre$.next(genre);
-    this.getMoviesByGenre();
+    // this.getMoviesByGenre();
   }
-  getGenres() {
-    this.genres$ = this.moviesService.getGenres().pipe(
-      map((genres) => {
-        return genres;
-      })
-    );
-  }
-  getMoviesByGenre() {
-    this.genreId = this.genre$.getValue().id;
-    this.moviesGenre$ = this.moviesService
-      .searchMovieByGenre(this.genreId)
-      .pipe(
-        map((movies: Result[]) => {
-          return movies;
-        })
-      );
-  }
+  // genres zovemo na prvi dolazak u app-component
+  // getGenres() {
+  //   this.genres$ = this.moviesService.getGenres().pipe(
+  //     map((genres) => {
+  //       return genres;
+  //     })
+  //   );
+  // }
+
+  // ne mora funkcija mozes odmah gore da definises
+  // getMoviesByGenre() {
+  //   this.genreId = this.genre$.getValue().id;
+  //   this.moviesGenre$ = this.moviesService
+  //     .searchMovieByGenre(this.genreId)
+  //     .pipe(
+  //       map((movies: Result[]) => {
+  //         return movies;
+  //       })
+  //     );
+  // }
+
   ngOnInit(): void {
-    this.getMoviesByGenre();
-    this.getGenres();
-    this.form = this.fb.group({
-      searchText: [null],
-    });
+    // this.getMoviesByGenre();
+    // this.getGenres();
+    // this.form = this.fb.group({
+    //   searchText: [null],
+    // });
     this.form
       .get('searchText')
       .valueChanges.pipe(debounceTime(700), distinctUntilChanged())

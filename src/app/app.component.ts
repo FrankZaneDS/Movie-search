@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {MoviesService} from './service/movies.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,12 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  movieService = inject(MoviesService);
   title = 'movieSearch';
+
+  ngOnInit(): void {
+    this.movieService.genres$ = this.movieService.getGenres();
+  }
+
 }
