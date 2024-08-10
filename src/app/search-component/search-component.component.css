@@ -1,3 +1,19 @@
+h1 {
+  color: white;
+}
+nav {
+  background-color: #1a273c;
+  a {
+    color: white;
+    font-size: 1.3rem;
+  }
+}
+.container-fluid {
+  background-color: #1a273c;
+}
+.dropdown-menu {
+  background-color: #1a273c;
+}
 .search {
   min-width: 200px;
   z-index: 2;

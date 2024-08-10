@@ -31,7 +31,7 @@ export class MoviesService {
     const body = {
       model: 'command-xlarge-nightly',
       prompt: question + movie + prompt,
-      max_tokens: 300,
+      max_tokens: 1000,
     };
 
     return this.http.post(this.apiChatUrl, body, { headers });

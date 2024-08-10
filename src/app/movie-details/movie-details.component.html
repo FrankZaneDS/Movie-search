@@ -1,156 +1,146 @@
-<div class="container">
-  <nav
-    class="navbar d-flex justify-content-between navbar-expand-lg navbar-light bg-light"
-  >
-    <a class="navbar-brand" href="#">Movies App</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div
-      class="collapse navbar-collapse d-flex justify-content-between"
-      id="navbarSupportedContent"
-    >
-      <ul class="navbar-nav d-flex justify-content-evenly mr-auto w-100">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Category
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <ng-container *ngFor="let genre of genres$ | async">
-              <a
-                [routerLink]="['/search', genre.id, genre.name]"
-                (click)="searchByGenre(genre)"
-                class="dropdown-item"
-                >{{ genre.name }}</a
-              >
-            </ng-container>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-      </ul>
-      <form [formGroup]="form" class="form-inline d-flex my-2 my-lg-0">
-        <input
-          formControlName="searchText"
-          class="form-control mr-sm-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        @if (searchMovies$ | async; as movies) {
-
-        <div
-          class="search border-1"
-          style="position: absolute; top: 50px; background-color: white"
-        >
-          <ng-container *ngFor="let movie of movies?.slice(0, 5)">
-            <p
-              (click)="this.getMovieDetails()"
-              *ngIf="form.get('searchText')?.value"
-              [routerLink]="['/details', movie.title, movie.id]"
-              class="movie m-0 p-2"
-            >
-              {{ movie.title }}
-            </p></ng-container
-          >
-        </div>
-        }
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-          Search
-        </button>
-      </form>
-    </div>
-  </nav>
-  @if (movie$ | async; as movie ) {
-  <div class="row">
-    <div class="col-12 d-flex">
-      <div
-        class="img mb-5 p-3 bg-body-secondary d-flex col-8 justify-content-center"
+<div class="container-fluid">
+  <div class="container">
+    <nav class="navbar d-flex justify-content-between navbar-expand-lg">
+      <a class="navbar-brand" href="#">Movies App</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
-        <img
-          class="col-12"
-          style="width: 60%"
-          [src]="[srcImg + movie.poster_path]"
-          alt=""
-        />
-      </div>
-      <div class="info ps-2 pt-2 col-4 d-flex flex-column">
-        <div class="title d-flex flex-column justify-content-evenly h-50">
-          <div class="">
-            <h1>{{ movie.title }}</h1>
-            <div class="genre d-flex col-12 justify-content-between">
-              <h5>Genres:</h5>
-              <ng-container *ngFor="let genre of movie.genres">
-                <p class="me-2 ms-2">{{ genre.name }}</p>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        class="collapse navbar-collapse d-flex justify-content-between"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav d-flex justify-content-evenly mr-auto w-100">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Category
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ng-container *ngFor="let genre of genres$ | async">
+                <a
+                  [routerLink]="['/search', genre.id]"
+                  (click)="searchByGenre(genre)"
+                  class="dropdown-item"
+                  >{{ genre.name }}</a
+                >
               </ng-container>
             </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+        </ul>
+        <form [formGroup]="form" class="form-inline d-flex my-2 my-lg-0">
+          <input
+            formControlName="searchText"
+            class="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          @if (searchMovies$ | async; as movies) {
+
+          <div
+            class="search border-1"
+            style="position: absolute; top: 50px; background-color: white"
+          >
+            <ng-container *ngFor="let movie of movies?.slice(0, 5)">
+              <p
+                (click)="this.getMovieDetails()"
+                *ngIf="form.get('searchText')?.value"
+                [routerLink]="['/details', movie.id]"
+                class="movie m-0 p-2"
+              >
+                {{ movie.title }}
+              </p></ng-container
+            >
           </div>
-          <div class="d-flex col-6 flex-column justify-content-between">
-            <p>Runtime: {{ movie.runtime }} min.</p>
-            <p>Rate: {{ movie.vote_average }}</p>
-            <p>Release Date: {{ movie.release_date }}</p>
-          </div>
+          }
+        </form>
+      </div>
+    </nav>
+    @if (movie$ | async; as movie ) {
+    <div class="row mt-5">
+      <div class="col-12 d-flex">
+        <div class="img mb-5 p-3 d-flex col-6 justify-content-center">
+          <img class="col-12" [src]="[srcImg + movie.poster_path]" alt="" />
         </div>
-        <div class="description col-12">
-          <h4>Overview:</h4>
-          <h5>
-            {{ movie.overview }}
-          </h5>
+        <div class="info ps-2 pt-2 col-6 h-100 ms-4 d-flex flex-column">
+          <div class="title d-flex flex-column">
+            <div class="">
+              <h1>{{ movie.title }}</h1>
+              <div class="genre d-flex col-12 justify-content-between">
+                <h5>Genres:</h5>
+                <ng-container *ngFor="let genre of movie.genres">
+                  <p class="me-2 ms-2">{{ genre.name }}</p>
+                </ng-container>
+              </div>
+            </div>
+            <div class="d-flex col-6 flex-column justify-content-between">
+              <p>Runtime: {{ movie.runtime }} min.</p>
+              <p>Rate: {{ movie.vote_average }}</p>
+              <p>Release Date: {{ movie.release_date }}</p>
+            </div>
+          </div>
+          <div class="description col-12">
+            <h4>Overview:</h4>
+            <h5>
+              {{ movie.overview }}
+            </h5>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="similarMovies"></div>
-  <div>
-    <h5 class="w-50">I dare you to ask me anything about this movie!!!</h5>
-    <input
-      (keyup.enter)="generateText(movie)"
-      class="form-control mr-sm-2 w-50"
-      [(ngModel)]="userPrompt"
-      placeholder="Ask me anything about this movie here :)"
-    />
-
+    <div class="similarMovies"></div>
     <div>
-      <h3>Response:</h3>
-      <div class="response w-50">
-        <p>{{ response }}</p>
-      </div>
-    </div>
+      <h5 class="w-50 mb-3">You can ask me anything about this movie...</h5>
+      <input
+        (keyup.enter)="generateText(movie)"
+        class="form-control mr-sm-2 w-50"
+        [(ngModel)]="userPrompt"
+        placeholder="Ask me anything about this movie here :)"
+      />
 
-    @if (similarMovies$|async; as similarMovies){
-
-    <div class="row popularMovies mb-5">
-      <h1 class="m-5">Similar Movies:</h1>
-      <div class="col-12 d-flex gap-3 overflow-auto">
-        <ng-container
-          *ngFor="let movie of similarMovies?.slice(0, 10); let i = index"
-        >
-          <app-movie-card [movie]="movie"></app-movie-card>
-        </ng-container>
+      <div>
+        <h3 class="mb-4 mt-4">Response:</h3>
+        <div class="response p-3 bg-dark">
+          <p>{{ response }}</p>
+        </div>
       </div>
+
+      @if (similarMovies$|async; as similarMovies){
+
+      <div class="row popularMovies pb-3">
+        <h1 class="m-5">Similar Movies:</h1>
+        <div class="col-12 d-flex gap-3 overflow-auto">
+          <ng-container
+            *ngFor="let movie of similarMovies?.slice(0, 10); let i = index"
+          >
+            <app-movie-card class="mb-3" [movie]="movie"></app-movie-card>
+          </ng-container>
+        </div>
+      </div>
+      }
     </div>
     }
   </div>
-  }
 </div>

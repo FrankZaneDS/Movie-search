@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MoviesService } from '../service/movies.service';
 import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
@@ -17,12 +17,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class SearchComponentComponent implements OnInit {
   moviesService = inject(MoviesService);
   fb = inject(FormBuilder);
-
+  route = inject(ActivatedRoute);
   form: FormGroup;
 
   genres$ = this.moviesService.genres$;
   genre$ = this.moviesService.genre$;
-  genreId: number;
+  genreId: number = this.route.snapshot.params['ID'];
   moviesGenre$: Observable<Result[]>;
   searchMovies$: Observable<Result[]>;
 
@@ -53,6 +53,7 @@ export class SearchComponentComponent implements OnInit {
     this.form = this.fb.group({
       searchText: [null],
     });
+
     this.form
       .get('searchText')
       .valueChanges.pipe(debounceTime(700), distinctUntilChanged())

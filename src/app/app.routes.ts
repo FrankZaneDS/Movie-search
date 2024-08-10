@@ -8,15 +8,15 @@ export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'home', component: LandingPageComponent },
   {
-    path: 'search/:ID/:name',
+    path: 'search/:ID',
     component: SearchComponentComponent,
   },
   {
-    path: 'search/:movieName/:ID',
+    path: 'search/:ID',
     component: SearchComponentComponent,
   },
   {
-    path: 'details/:name/:ID',
+    path: 'details/:ID',
     component: MovieDetailsComponent,
   },
 ];

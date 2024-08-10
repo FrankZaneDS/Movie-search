@@ -1,9 +1,15 @@
 <div
   class="card"
-  [routerLink]="['/details', movie.title, movie.id]"
-  style="width: 18rem"
+  [routerLink]="['/details', movie.id]"
+  style="width: 18rem; min-height: 100%"
 >
-  <img [src]="[srcImg + movie.poster_path]" class="card-img-top" alt="..." />
+  <img
+    [src]="[srcImg + movie.poster_path]"
+    style="min-height: 27rem"
+    class="card-img-top"
+    alt="..."
+  />
+  <p class="ms-3">Relase date: {{ movie.release_date }}</p>
   <div class="card-body">
     <h5 class="card-title" style="min-height: 3rem; overflow: hidden">
       {{ movie.title }}
@@ -13,6 +19,5 @@
       Some quick example text to build on the card title and make up the bulk of
       the card's content.
     </p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
   </div>
 </div>
