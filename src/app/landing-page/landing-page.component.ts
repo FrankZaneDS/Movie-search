@@ -1,7 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MoviesService } from '../service/movies.service';
 import { Genre, Result, searchResult } from '../service/types';
-import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Observable,
+  switchMap,
+} from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { RouterLink } from '@angular/router';
@@ -20,8 +27,9 @@ export class LandingPageComponent implements OnInit {
 
   form: FormGroup;
 
+  currentPage: number = 1;
   popularMovies$ = new Observable<Result[]>();
-  randomMovies$ = new Observable<Result[]>();
+  randomMovies$ = new BehaviorSubject<Result[]>([]);
   genres$ = this.moviesService.genres$;
   searchMovies$ = this.moviesService.searchMovies$;
 
@@ -35,11 +43,19 @@ export class LandingPageComponent implements OnInit {
     );
   }
   getRandomMovies() {
-    this.randomMovies$ = this.moviesService.getRandomMovie().pipe(
-      map((movies: Result[]) => {
-        return movies;
-      })
-    );
+    this.moviesService
+      .getRandomMovie(this.currentPage)
+      .pipe(
+        map((newMovies: Result[]) => {
+          const currentMovies = this.randomMovies$.getValue();
+          return [...currentMovies, ...newMovies];
+        })
+      )
+      .subscribe((movies) => this.randomMovies$.next(movies));
+  }
+  loadMoreMovies() {
+    this.currentPage++;
+    this.getRandomMovies();
   }
 
   getGenres() {

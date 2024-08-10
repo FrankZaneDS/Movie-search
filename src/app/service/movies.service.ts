@@ -54,10 +54,10 @@ export class MoviesService {
       `${this.apiUrl}/movie/${movieId}?api_key=${environment.tmdbApiKey}`
     );
   }
-  getRandomMovie(): Observable<Result[]> {
+  getRandomMovie(page: number): Observable<Result[]> {
     return this.http
       .get(
-        `${this.apiUrl}/discover/movie?api_key=${environment.tmdbApiKey}&sort_by=revenue.desc`
+        `${this.apiUrl}/discover/movie?api_key=${environment.tmdbApiKey}&sort_by=revenue.desc&page=${page}`
       )
       .pipe(map((response: any) => response.results));
   }

@@ -26,6 +26,9 @@ nav {
 .search {
   min-width: 200px;
   z-index: 2;
+  p {
+    color: black;
+  }
 }
 .movie {
   border: 1px solid;
@@ -40,4 +43,5 @@ nav {
   border: 1px solid;
   min-height: 300px;
   min-width: 50%;
+  border-radius: 50px;
 }
